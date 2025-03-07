@@ -1,25 +1,17 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { LaptopsList } from './screens/LaptopsList'; // Asegúrate de que esta ruta sea correcta
-import {LaptopsForm} from './screens/LaptopsForm'
-
-const Stack = createNativeStackNavigator();
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { LaptopsList } from "./screens/LaptopsList";
+import { LaptopsForms } from "./screens/LaptopsForms"
 
 export default function App() {
+  const StackLaptops = createNativeStackNavigator();
+
   return (
-   <NavigationContainer>
-         <Stack.Navigator initialRouteName='LaptopsListNav'>
-           <Stack.Screen 
-             name="LaptopsListNav" 
-             component={LaptopsList} 
-           />
-           <Stack.Screen 
-             name="LaptopsFormNav" 
-             component={LaptopsForm} 
-           />
-         </Stack.Navigator>
-       </NavigationContainer>
+    <NavigationContainer>
+      <StackLaptops.Navigator initialRouteName="LaptopsListNav">
+        <StackLaptops.Screen name="LaptopsListNav" component={LaptopsList} />
+        <StackLaptops.Screen name="LaptopsFormsNav" component={LaptopsForms} />
+      </StackLaptops.Navigator>
+    </NavigationContainer>
   );
 }
-
-
