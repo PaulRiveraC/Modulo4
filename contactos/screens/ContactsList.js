@@ -1,53 +1,48 @@
-import { View, Text, StyleSheet, FlatList, TouchableHighlight } from "react-native"
-import { Button, ListItem, FAB } from "@rneui/base"
+import { View, Text, StyleSheet, FlatList } from "react-native"
+import { Button,ListItem } from "@rneui/base"
 import { getAllContacts } from "../rest_client/contactos"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
-export const ContactsList = ({ navigation }) => {
-  const [contactsList, setContactsList] = useState([])
+export const ContactsList = () => {
 
-  useEffect(() => {
-    console.log("Funcion useEffect")
-    getAllContacts(fnRefreshList)
-  }, {});
+    const [contactsList, setContactsList] = useState([]);
 
-  const ConstactItem = ({ contact }) => {
-    return <TouchableHighlight onPress={() => {
-      navigation.navigate("ContactsFormNav", { contactParam: contact })
-    }}>
-      <ListItem>
+    const ContactItem = ({contact}) => {
+        return <ListItem>
         <ListItem.Content>
           <ListItem.Title>{contact.nombre} {contact.apellido}</ListItem.Title>
           <ListItem.Subtitle>{contact.celular}</ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
-    </TouchableHighlight>
+    }
+    
+    const fnRefreshList = (contacts) => {
+        setContactsList(contacts);
+    }
+    return <View>
+        <Text>LISTA DE CONTACTOS</Text>
+        <Button
+            title="Consultar"
+            onPress={() => {
+                getAllContacts(fnRefreshList);
+            }}
+        />
+        <FlatList
+            data={contactsList}
+            renderItem={({item})=>{
+                return <ContactItem contact={item}/>
+            }}
+            keyExtractor={(item) => item.id.toString()} // Añadir keyExtractor
 
-  }
-
-  fnRefreshList = (contacts) => {
-    setContactsList(contacts)
-  }
-  return <View style={styles.container}>
-    <Text>Lista de Contactos</Text>
-    <FlatList
-      data={contactsList}
-      renderItem={({ item }) => {
-        return <ConstactItem contact={item} />
-      }}
-    />
-    <FAB
-      title="+"
-      onPress={() => { navigation.navigate("ContactsFormNav", {}) }}
-    />
-  </View>
+        />
+    </View>
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });

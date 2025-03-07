@@ -1,18 +1,20 @@
-import { NavigationContainer} from "@react-navigation/native"
-import {createNativeStackNavigator} from "@react-navigation/native-stack"
-import {ContactsList} from "./screens/ContactsList"
-import {ContactsForm} from "./screens/ContactsForm"
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ContactsList } from './screens/ContactsList'; // Asegúrate de que esta ruta sea correcta
+
+// Crear el stack navigator
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const stackContacts = createNativeStackNavigator()
   return (
     <NavigationContainer>
-      <stackContacts.Navigator initialRouteName="ContactsListNav">
-        <stackContacts.Screen name="ContactsListNav" component={ContactsList} />
-        <stackContacts.Screen name="ContactsFormNav" component={ContactsForm} />
-      </stackContacts.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen 
+          name="ContactsListNav" 
+          component={ContactsList} 
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-

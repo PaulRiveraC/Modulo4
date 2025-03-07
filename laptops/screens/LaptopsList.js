@@ -1,71 +1,59 @@
-import { View, Text, StyleSheet, FlatList, TouchableHighlight } from "react-native";
-import { Button, ListItem, FAB } from "@rneui/base";
-import { getAllLaptops } from "../rest_client/laptops";
-import { useState, useEffect } from "react";
+import { View, Text, StyleSheet, FlatList, TouchableHighlight } from "react-native"
+import { Button, ListItem } from "@rneui/base"
+import { getAllLaptops } from "../rest_laptops/laptops"
+import { useState,useEffect } from "react"
+import { FAB } from '@rneui/themed';
 
 export const LaptopsList = ({ navigation }) => {
-  const [laptopsList, setLaptopsList] = useState([]);
 
-  useEffect(()=>{
-    getAllLaptops(fnRefreshList);
-  },[]);
-  const LaptopItems = ({ laptop }) => {
-    return (
-      <TouchableHighlight
-        onPress={() => {
-          navigation.navigate("LaptopsFormsNav", {laptopParam:laptop});
-        }}
-      >
-        <ListItem>
-          <ListItem.Content>
-            <ListItem.Title>
-              {laptop.marca} {laptop.procesador}
-            </ListItem.Title>
-            <ListItem.Subtitle>
-              {laptop.memoria} {laptop.disco}
-            </ListItem.Subtitle>
-          </ListItem.Content>
-        </ListItem>
-      </TouchableHighlight>
-    );
-  };
+    const [laptopsList, setLaptopsList] = useState([]);
+    useEffect(()=>{
+        console.log("Ejecuto useEfeect")
+        getAllLaptops(fnRefreshList);
 
-  const fnRefreshList = (laptops) => {
-    setLaptopsList(laptops);
-  };
+    },[]);
+    const LaptopItem = ({ laptops }) => {
+        return <TouchableHighlight onPress={() => {
+            navigation.navigate("LaptopsFormNav",{laptopsParam:laptops});
+        }}>
+            <ListItem>
+                <ListItem.Content>
+                    <ListItem.Title>{laptops.marca} {laptops.procesador}</ListItem.Title>
+                    <ListItem.Subtitle>{laptops.memoria}</ListItem.Subtitle>
+                </ListItem.Content>
+            </ListItem></TouchableHighlight>
+    }
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}>Lista de laptops</Text>
-      <FlatList
-        data={laptopsList}
-        renderItem={({ item }) => {
-          return <LaptopItems laptop={item} />;
-        }}
-      />
-      <FAB
-        title="+"
-        onPress={() => {
-          navigation.navigate("LaptopsFormsNav", {});
-        }}
-      />
+    const fnRefreshList = (laptops) => {
+        setLaptopsList(laptops);
+    }
+
+    return <View style={styles.container}>
+        
+        <FlatList
+            data={laptopsList}
+            renderItem={({ item }) => {
+                return <LaptopItem laptops={item} />
+            }}
+            keyExtractor={(item) => item.id.toString()} // Añadir keyExtractor
+
+        />
+        <FAB
+            title="+"
+            onPress={() => {
+                navigation.navigate("LaptopsFormNav",{})
+            }}
+        />
     </View>
-  );
-};
+
+
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    flexDirection: "column",
-    alignItems: "stretch",
-    justifyContent: "flex-start",
-  },
-  titulo: {
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    marginTop: 20,
-    marginBottom: 10,
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'stretch',
+        justifyContent: 'flex-start',
+    },
 });
